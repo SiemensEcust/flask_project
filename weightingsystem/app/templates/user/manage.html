@@ -1,0 +1,54 @@
+{% extends "base1.html" %}
+{% block title %}用户注册{% endblock %}
+{% import "bootstrap/wtf.html" as wtf %}
+{% block page_content %}
+<div class="container">
+	<div class="page-header">
+		<h1>用户管理</h1>
+	</div>
+	<table class="table table-bordered table-hover">
+		<thead>
+			<td><strong>用户名</strong></td>
+			<td><strong>用户等级</strong></td>
+			<td><strong>监控设备</strong></td>
+			<td><strong>登录授权</strong></td>
+			<!--
+			<td><strong>故障开始时累积量(拟值)读数</strong></td>
+			<td><strong>故障结束时累积量(拟值)读数</strong></td>
+			-->
+		</thead>
+		{% for user in UserList %}
+		<tr>
+			<td>{{ user.username }}</td>
+			<td>
+				{% if user.role_id == 1 %}
+					操作员
+				{% elif user.role_id == 2 %}
+					工程师
+				{% else %}
+					工程经理
+				{% endif %}
+			</td>
+			<td>
+				{% if user.EqpID %}
+					{{ user.EqpID }}
+				{% else %}
+					无可操作设备
+				{% endif %}
+			</td>
+			<td>
+				{% if user.confirmed %}
+					已授权
+				{% else %}
+					未授权
+				{% endif %}
+			</td>
+		</tr>
+		{% endfor %}
+	</table>
+</div>
+{% endblock %}
+{% block scripts %}
+{{ super() }}
+<script type=text/javascript src="{{ url_for('static', filename='register/manage.js') }}"></script> 
+{% endblock %}
